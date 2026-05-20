@@ -1,0 +1,27 @@
+{
+  "app": {
+    "title": "Etkileşimli Şablon Oluşturucu"
+  },
+  "action": {
+    "undo": "Geri Al",
+    "redo": "Yinele",
+    "bringForward": "Öne Taşı",
+    "sendBackward": "Geri Gönder"
+  },
+  "element": {
+    "title": "ÖĞELER",
+    "heading": "Başlık",
+    "text": "Metin",
+    "button": "Buton",
+    "image": "Resim",
+    "divider": "Ayırıcı"
+  },
+  "management": {
+    "new": "+ Yeni",
+    "save": "Kaydet",
+    "exportJson": "JSON Dışa Aktar"
+  },
+  "footer": {
+    "templateInfo": "Şablon"
+  }
+}

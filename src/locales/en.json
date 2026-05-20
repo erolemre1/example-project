@@ -1,0 +1,27 @@
+{
+  "app": {
+    "title": "Interactive Template Builder"
+  },
+  "action": {
+    "undo": "Undo",
+    "redo": "Redo",
+    "bringForward": "Bring Forward",
+    "sendBackward": "Send Backward"
+  },
+  "element": {
+    "title": "ELEMENTS",
+    "heading": "Heading",
+    "text": "Text",
+    "button": "Button",
+    "image": "Image",
+    "divider": "Divider"
+  },
+  "management": {
+    "new": "+ New",
+    "save": "Save",
+    "exportJson": "Export JSON"
+  },
+   "footer": {
+    "templateInfo": "Template"
+  }
+}

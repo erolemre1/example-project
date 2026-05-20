@@ -10,11 +10,11 @@ import {
 } from 'lucide-vue-next'
 
 const paletteItems: { type: ElementType; label: string; icon: any }[] = [
-  { type: 'heading', label: 'Heading', icon: Heading },
-  { type: 'text', label: 'Text', icon: Type },
-  { type: 'button', label: 'Button', icon: Square },
-  { type: 'image', label: 'Image', icon: Image },
-  { type: 'divider', label: 'Divider', icon: Minus },
+  { type: 'heading', label: 'element.heading', icon: Heading },
+  { type: 'text', label: 'element.text', icon: Type },
+  { type: 'button', label: 'element.button', icon: Square },
+  { type: 'image', label: 'element.image', icon: Image },
+  { type: 'divider', label: 'element.divider', icon: Minus },
 ]
 
 
@@ -22,14 +22,14 @@ const paletteItems: { type: ElementType; label: string; icon: any }[] = [
 
 <template>
   <div class="element-palette">
-    <h3 class="palette-title">ELEMENTS</h3>
+    <h3 class="palette-title">{{ $t('element.title') }}</h3>
     <div
       v-for="item in paletteItems"
       :key="item.type"
       class="palette-item"
     >
       <button class="palette-icon"><component :is="item.icon" :size="16" /></button> 
-      <span class="palette-label">{{ item.label }}</span>
+      <span class="palette-label">{{ $t(item.label) }}</span>
     </div>
   </div>
 </template>
