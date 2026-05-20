@@ -1,4 +1,12 @@
 <script setup lang="ts">
+import { 
+  Undo2, 
+  Redo2, 
+  ArrowUp, 
+  ArrowDown 
+} from 'lucide-vue-next'
+import Elements from './components/Elements.vue'
+
 import { useBaseStore } from './stores/index'
 const store = useBaseStore()
 
@@ -9,23 +17,16 @@ const store = useBaseStore()
     <header class="app-header">
       <h1 class="app-title">Interactive Template Builder</h1>
       <div class="header-actions">
-        <button class="btn-icon">
-           Undo
-        </button>
-        <button class="btn-icon">
-           Redo
-        </button>
+          <button class="btn-icon"><Undo2 :size="16" /> Undo</button> 
+          <button class="btn-icon"><Redo2 :size="16" /> Redo</button> 
       </div>
     </header>
     <div class="app-body">
+      <Elements />
       <main class="canvas-container">
         <div class="canvas-actions">
-          <button class="btn-sm">
-             Bring Forward
-          </button>
-          <button class="btn-sm">
-             Send Backward
-          </button>
+          <button class="btn-icon"><ArrowUp :size="16" /> Bring Forward</button> 
+          <button class="btn-icon"><ArrowDown :size="16" /> Send Backward</button>
         </div>
       </main>
     </div>

@@ -1,0 +1,1 @@
+export type ElementType = 'heading' | 'text' | 'button' | 'image' | 'divider';
