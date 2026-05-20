@@ -21,7 +21,10 @@
     "save": "Save",
     "exportJson": "Export JSON"
   },
-   "footer": {
+  "footer": {
     "templateInfo": "Template"
+  },
+  "panel": {
+    "properties": "PROPERTIES"
   }
 }

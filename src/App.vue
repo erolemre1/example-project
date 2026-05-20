@@ -7,6 +7,8 @@ import {
 } from 'lucide-vue-next'
 import Elements from './components/Elements.vue'
 import Management from './components/Management.vue'
+import Properties from './components/Properties.vue'
+import Canvas from './components/Canvas.vue'
 
 import { useBaseStore } from './stores/index'
 const store = useBaseStore()
@@ -29,6 +31,7 @@ const store = useBaseStore()
     <div class="app-body">
       <Elements />
       <main class="canvas-container">
+        <Canvas />
         <div class="canvas-actions">
           <button class="btn-icon">
             <ArrowUp :size="16" /> {{ $t('action.bringForward') }}
@@ -38,6 +41,7 @@ const store = useBaseStore()
           </button>
         </div>
       </main>
+      <Properties />
     </div>
     <footer class="app-footer">
       <Management />

@@ -23,5 +23,8 @@
   },
   "footer": {
     "templateInfo": "Şablon"
+  },
+  "panel": {
+    "properties": "ÖZELLİKLER"
   }
 }
