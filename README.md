@@ -29,21 +29,19 @@ The project is structured as a simple monorepo to make the setup and review proc
 
 2. **Start the Backend Server:**
 Runs the Express server on http://localhost:3001
-
-  ```sh
-    npm run server
-
+   ```sh
+   npm run server
+   
 3. **Start the Backend Server:**
 Runs the Vue app via Vite (typically on http://localhost:5173)
 
-```sh
+   ```sh
    npm run dev
 
 4. **Run Tests:**
 
-```sh
+   ```sh
    npm run test
-
 
 ## Architecture & Technical Decisions
 
