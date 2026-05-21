@@ -30,7 +30,7 @@
     cursor: pointer;
     font-size: 13px;
     color: var(--color-gray-700);
-    transition: background 0.15s;
+    display: flex;
 }
 
 .btn:hover {

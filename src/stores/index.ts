@@ -90,10 +90,42 @@ export const useBaseStore = defineStore('base', () => {
     selectedElementId.value = newElement.id
   }
 
+  function selectElement(id: string): void {
+    selectedElementId.value = id
+  }
+
+  function moveElement(id: string, x: number, y: number): void {
+    const element = elements.value.find((item) => item.id === id)
+    if (element) {
+      element.position.x = x
+      element.position.y = y
+    }
+  }
+
+  function resizeElement(id: string, width: number, height: number): void {
+    const element = elements.value.find((item) => item.id === id)
+    if (element) {
+      element.size.width = width
+      element.size.height = height
+    }
+  }
+
+  function saveMovement(id: string, x: number, y: number): void {
+    const element = elements.value.find((item) => item.id === id)
+    if (element) {
+      element.position.x = x
+      element.position.y = y
+    }
+  }
 
   return {
     elements,
+    selectedElementId,
     templateName,
     addElement,
+    selectElement,
+    moveElement,
+    resizeElement,
+    saveMovement,
   }
 })

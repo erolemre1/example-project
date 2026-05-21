@@ -32,7 +32,7 @@ const store = useBaseStore()
       <Elements />
       <main class="canvas-container">
         <Canvas />
-        <div class="canvas-actions">
+        <div class="canvas-actions" v-if="store.selectedElementId">
           <button class="btn-icon">
             <ArrowUp :size="16" /> {{ $t('action.bringForward') }}
           </button>
@@ -89,12 +89,11 @@ const store = useBaseStore()
   cursor: pointer;
   font-size: 13px;
   color: var(--color-gray-700);
-  transition: background 0.15s;
+  display: flex;
 }
 
-.btn-icon:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+.btn-icon svg {
+  margin-right: 8px;
 }
 
 .app-body {
@@ -128,7 +127,7 @@ const store = useBaseStore()
   cursor: pointer;
   font-size: 13px;
   color: var(--color-gray-700);
-  transition: background 0.15s;
+  display: flex;
 }
 
 
