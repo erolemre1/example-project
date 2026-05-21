@@ -58,7 +58,6 @@ During development, I made the following assumptions to maintain scope and focus
 1. **In-Memory Volatility:** Since the backend uses an in-memory array, all saved templates will be lost when the npm run server process is restarted. This was deemed acceptable based on the "no external DB required" constraint.
 2. **Canvas Boundaries:** I assumed that elements dragged partially outside the boundaries should be clipped (overflow: hidden) rather than expanding the canvas.
 3. **No Authentication:** I assumed this is a purely internal tool or a localized demo, so no user authentication or session management was implemented.
-4. **CORS:** I enabled CORS fully on the backend to allow the Vite dev server to communicate with the Express API without proxy configuration complexities.
 
 ## What I Would Improve With More Time
 
@@ -69,9 +68,8 @@ Given the 5-8 hour development constraint, I focused strictly on core functional
 
 - ** Separate Repositories: Currently, the project is structured as a monorepo for ease of review. In a real-world scenario with more time, I would separate the backend into its own repository. This separation of concerns would allow for independent deployment pipelines, easier scaling, and cleaner dependency management.
 
-### 2. Features (Bonus Implementation)
+### 2. Features
 - **Real Database Integration:** Replace the in-memory array with a real database (like PostgreSQL or MongoDB) using an ORM like Prisma or Mongoose for persistent data storage.
-- **Z-Index Management:** Add controls to bring elements forward or send them backward, which is crucial for complex visual designs.
 - **Grid Snapping:** Implement a snapping mechanism during the drag event for precise, aligned element placement.
 
 ### 3. Testing
