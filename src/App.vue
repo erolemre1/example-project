@@ -42,7 +42,7 @@ const store = useBaseStore()
           </button>
         </div>
       </main>
-      <Properties />
+      <Properties v-if="store.selectedElementId" />
     </div>
     <footer class="app-footer">
       <Management />
@@ -57,7 +57,13 @@ const store = useBaseStore()
   </div>
 </template>
 
-<style scoped>
+<style>
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
 .app {
   display: flex;
   flex-direction: column;
