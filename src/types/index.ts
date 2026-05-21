@@ -1,4 +1,6 @@
-export enum ElementType {
+
+export type ElementType = 'heading' | 'text' | 'button' | 'image' | 'divider'
+export enum ElementEnum {
     HEADING = 'heading',
     TEXT = 'text',
     BUTTON = 'button',
@@ -24,14 +26,14 @@ export type Size = {
 
 export interface BaseElement {
     id: string
-    type: ElementType
+    type: ElementEnum
     position: Position
     zIndex: number
     size: Size
 }
 
 export interface HeadingElement extends BaseElement {
-    type: ElementType.HEADING
+    type: ElementEnum.HEADING
     content: string
     fontSize: number
     color: string
@@ -39,7 +41,7 @@ export interface HeadingElement extends BaseElement {
 }
 
 export interface TextElement extends BaseElement {
-    type: ElementType.TEXT
+    type: ElementEnum.TEXT
     content: string
     fontSize: number
     color: string
@@ -47,7 +49,7 @@ export interface TextElement extends BaseElement {
 }
 
 export interface ButtonElement extends BaseElement {
-    type: ElementType.BUTTON
+    type: ElementEnum.BUTTON
     text: string
     backgroundColor: string
     textColor: string
@@ -55,13 +57,13 @@ export interface ButtonElement extends BaseElement {
 }
 
 export interface ImageElement extends BaseElement {
-    type: ElementType.IMAGE
+    type: ElementEnum.IMAGE
     url: string
     altText: string
 }
 
 export interface DividerElement extends BaseElement {
-    type: ElementType.DIVIDER
+    type: ElementEnum.DIVIDER
     color: string
     thickness: number
 }
