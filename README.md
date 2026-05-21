@@ -1,6 +1,6 @@
 # Interactive Popup Template Builder
 
-This project is an interactive, drag-and-drop popup template builder designed for marketing managers to visually create and customize popups without needing developer assistance.
+This is an interactive, drag-and-drop pop-up template builder specifically designed for interview assessments.
 
 Developed using Vue 3, TypeScript, and Express.js, this project delivers the core requirements of the Trial Project.
 
@@ -28,7 +28,7 @@ The project is structured as a simple monorepo to make the setup and review proc
    npm install
 
 2. **Start the Backend Server:**
-Runs the Express server on http://localhost:3000
+Runs the Express server on http://localhost:3001
 
   ```sh
     npm run server
