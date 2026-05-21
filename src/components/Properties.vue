@@ -366,4 +366,49 @@ function deleteSelected(): void {
     font-size: 13px;
     padding: 40px 10px;
 }
+
+input[type="color"] {
+    appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid var(--color-gray-300);
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    padding: 2px;
+    cursor: pointer;
+    background: none;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 4px;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    background: transparent;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    background: var(--color-gray-200);
+    border-radius: 2px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: var(--color-indigo-500, #4f46e5);
+    cursor: pointer;
+    margin-top: -6px;
+    border: 2px solid var(--color-white);
+}
 </style>
