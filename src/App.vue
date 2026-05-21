@@ -9,6 +9,7 @@ import Elements from './components/Elements.vue'
 import Management from './components/Management.vue'
 import Properties from './components/Properties.vue'
 import Canvas from './components/Canvas.vue'
+import Notification from './components/Notification.vue'
 
 import { useBaseStore } from './stores/index'
 const store = useBaseStore()
@@ -46,9 +47,13 @@ const store = useBaseStore()
     <footer class="app-footer">
       <Management />
       <div class="template-info">
-        {{ $t('footer.templateInfo') }}: {{ store.templateName }}
+        <label>
+          {{ $t('footer.templateInfo') }}:
+          <input class="template-name-input" type="text" v-model="store.templateName" />
+        </label>
       </div>
     </footer>
+    <Notification />
   </div>
 </template>
 
@@ -139,5 +144,34 @@ const store = useBaseStore()
   padding: 10px 24px;
   border-top: 1px solid var(--color-gray-200);
   background: var(--color-white);
+}
+
+.template-info {
+  background: var(--color-gray-100);
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+.template-info label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--color-gray-700);
+}
+
+.template-name-input {
+  padding: 6px 10px;
+  border: none;
+  background: var(--color-gray-100);
+  color: var(--color-gray-800);
+  font-weight: 600;
+  width: 130px;
+}
+
+.template-name-input:active,
+.template-name-input:focus,
+.template-name-input:focus-visible {
+  outline: none;
 }
 </style>
