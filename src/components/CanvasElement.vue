@@ -311,7 +311,6 @@ const elementStyle = computed(() => ({
     align-items: center;
     justify-content: center;
     background: var(--color-gray-100);
-    border: 1px solid var(--color-gray-300);
     border-radius: 4px;
     overflow: hidden;
 }

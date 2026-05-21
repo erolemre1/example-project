@@ -1,11 +1,9 @@
 <script setup lang="ts">
-
 import type { ElementType } from '../types'
 import {
     Heading,
     Type,
     Square,
-    Image,
     Minus
 } from 'lucide-vue-next'
 
@@ -13,7 +11,7 @@ const paletteItems: { type: ElementType; label: string; icon: any }[] = [
     { type: 'heading', label: 'element.heading', icon: Heading },
     { type: 'text', label: 'element.text', icon: Type },
     { type: 'button', label: 'element.button', icon: Square },
-    { type: 'image', label: 'element.image', icon: Image },
+    { type: 'image', label: 'element.image', icon: '▣' },
     { type: 'divider', label: 'element.divider', icon: Minus },
 ]
 
@@ -24,7 +22,6 @@ function onDragStart(e: DragEvent, type: ElementType): void {
         e.dataTransfer.effectAllowed = 'copy'
     }
 }
-
 </script>
 
 <template>
@@ -33,7 +30,11 @@ function onDragStart(e: DragEvent, type: ElementType): void {
         <div v-for="item in paletteItems" :key="item.type" class="palette-item" draggable="true"
             @dragstart="onDragStart($event, item.type)">
             <button class="palette-icon">
-                <component :is="item.icon" :size="16" />
+                <span v-if="typeof item.icon === 'string'" class="unicode-icon">
+                    {{ item.icon }}
+                </span>
+
+                <component v-else :is="item.icon" :size="16" />
             </button>
             <span class="palette-label">{{ $t(item.label) }}</span>
         </div>
@@ -82,6 +83,14 @@ function onDragStart(e: DragEvent, type: ElementType): void {
     font-size: 14px;
     color: var(--color-gray-600);
     background: var(--color-gray-50);
+}
+
+.unicode-icon {
+    font-size: 18px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .palette-label {

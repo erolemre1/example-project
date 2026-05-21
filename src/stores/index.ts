@@ -11,11 +11,12 @@ import type {
   Template,
 } from '@/types'
 import { cloneElements, generateId } from '@/utils/store-utils'
+import DefaultElements from '@/data/default-template'
 
 export const useBaseStore = defineStore('base', () => {
-  const elements = ref<TemplateElement[]>([])
-  const selectedElementId = ref<string | null>(null)
-  const templateName = ref('Untitled Template')
+  const elements = ref<TemplateElement[]>(DefaultElements)
+  const selectedElementId = ref<string | null>(DefaultElements?.[4]?.id || null)
+  const templateName = ref('Promo Popup v1')
   const templateId = ref<string>(generateId())
   const canvasSize = ref({ width: 400, height: 500 })
   const backgroundColor = ref('#FFFFFF')
@@ -50,8 +51,6 @@ export const useBaseStore = defineStore('base', () => {
   function pushHistory(): void {
     history.push(elements.value)
   }
-
-
 
   function addElement(type: ElementType, x: number, y: number): void {
     history.push(elements.value)
@@ -91,7 +90,7 @@ export const useBaseStore = defineStore('base', () => {
           ...baseProps,
           type: 'button',
           text: 'Click Me',
-          backgroundColor: '#6366f1',
+          backgroundColor: '#4f46e5',
           textColor: '#ffffff',
           borderRadius: 8,
           size: { width: 170, height: 48 },
