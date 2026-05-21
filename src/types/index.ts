@@ -79,6 +79,8 @@ export interface Template {
     id: string;
     name: string;
     elements: TemplateElement[];
+    canvasSize: Size;
+    backgroundColor: string;
     createdAt: string;
     updatedAt: string;
 }

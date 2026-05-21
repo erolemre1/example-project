@@ -18,6 +18,8 @@ interface Template {
     id: string
     name: string
     elements: unknown[]
+    canvasSize: { width: number; height: number }
+    backgroundColor: string
     createdAt: string
     updatedAt: string
 }
