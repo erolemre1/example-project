@@ -2,7 +2,6 @@
 import { ref, computed } from 'vue'
 import { useBaseStore } from '../stores/index'
 import type { TemplateElement } from '../types'
-import { Maximize2 } from 'lucide-vue-next'
 
 const props = defineProps<{
     element: TemplateElement
@@ -18,9 +17,11 @@ const dragHasMoved = ref(false)
 const resizeHasChanged = ref(false)
 
 let dragOffset = { x: 0, y: 0 }
-let startDragPos = { x: 0, y: 0 }
+let currentResizeHandle = ''
+
 let startResizePos = { x: 0, y: 0 }
 let startResizeSize = { width: 0, height: 0 }
+let startResizeElemPos = { x: 0, y: 0 }
 
 function onMouseDown(e: MouseEvent): void {
     if (isResizing.value) return
@@ -34,7 +35,6 @@ function onMouseDown(e: MouseEvent): void {
         x: e.clientX - props.element.position.x,
         y: e.clientY - props.element.position.y,
     }
-    startDragPos = { ...props.element.position }
 
     document.addEventListener('mousemove', onMouseMove)
     document.addEventListener('mouseup', onMouseUp)
@@ -53,22 +53,22 @@ function onMouseMove(e: MouseEvent): void {
 }
 
 function onMouseUp(): void {
-    if (isDragging.value) {
-        isDragging.value = false
-    }
+    if (isDragging.value) isDragging.value = false
     document.removeEventListener('mousemove', onMouseMove)
     document.removeEventListener('mouseup', onMouseUp)
 }
 
-function onResizeStart(e: MouseEvent): void {
+function onResizeStart(e: MouseEvent, handle: string): void {
     e.stopPropagation()
     e.preventDefault()
 
     isResizing.value = true
     resizeHasChanged.value = false
+    currentResizeHandle = handle
 
     startResizeSize = { width: props.element.size.width, height: props.element.size.height }
     startResizePos = { x: e.clientX, y: e.clientY }
+    startResizeElemPos = { x: props.element.position.x, y: props.element.position.y }
 
     document.addEventListener('mousemove', onResizeMove)
     document.addEventListener('mouseup', onResizeEnd)
@@ -83,9 +83,37 @@ function onResizeMove(e: MouseEvent): void {
 
     const dx = e.clientX - startResizePos.x
     const dy = e.clientY - startResizePos.y
-    const width = Math.max(40, startResizeSize.width + dx)
-    const height = Math.max(20, startResizeSize.height + dy)
-    store.resizeElement(props.element.id, width, height)
+
+    let newWidth = startResizeSize.width
+    let newHeight = startResizeSize.height
+    let newX = startResizeElemPos.x
+    let newY = startResizeElemPos.y
+
+    const minWidth = 40
+    const minHeight = 20
+
+    if (currentResizeHandle.includes('right')) {
+        newWidth = Math.max(minWidth, startResizeSize.width + dx)
+    } else if (currentResizeHandle.includes('left')) {
+        const potentialWidth = startResizeSize.width - dx
+        if (potentialWidth >= minWidth) {
+            newWidth = potentialWidth
+            newX = startResizeElemPos.x + dx
+        }
+    }
+
+    if (currentResizeHandle.includes('bottom')) {
+        newHeight = Math.max(minHeight, startResizeSize.height + dy)
+    } else if (currentResizeHandle.includes('top')) {
+        const potentialHeight = startResizeSize.height - dy
+        if (potentialHeight >= minHeight) {
+            newHeight = potentialHeight
+            newY = startResizeElemPos.y + dy
+        }
+    }
+
+    store.resizeElement(props.element.id, newWidth, newHeight)
+    store.moveElement(props.element.id, newX, newY)
 }
 
 function onResizeEnd(): void {
@@ -105,7 +133,8 @@ const elementStyle = computed(() => ({
 </script>
 
 <template>
-    <div class="canvas-element" :class="{ selected: isSelected }" :style="elementStyle" @mousedown="onMouseDown">
+    <div class="canvas-element" :class="{ selected: isSelected, dragging: isDragging }" :style="elementStyle"
+        @mousedown="onMouseDown">
         <h2 v-if="element.type === 'heading'" class="el-heading" :style="{
             fontSize: element.fontSize + 'px',
             color: element.color,
@@ -142,9 +171,19 @@ const elementStyle = computed(() => ({
             borderWidth: element.thickness + 'px',
         }" />
 
-        <div v-if="isSelected" class="resize-handle" @mousedown="onResizeStart">
-            <Maximize2 :size="20" class="resize-icon" />
-        </div>
+        <template v-if="isSelected">
+            <div class="selection-border"></div>
+
+            <div class="handle top-left" @mousedown="onResizeStart($event, 'top-left')"></div>
+            <div class="handle top-right" @mousedown="onResizeStart($event, 'top-right')"></div>
+            <div class="handle bottom-left" @mousedown="onResizeStart($event, 'bottom-left')"></div>
+            <div class="handle bottom-right" @mousedown="onResizeStart($event, 'bottom-right')"></div>
+
+            <div class="handle top-center" @mousedown="onResizeStart($event, 'top-center')"></div>
+            <div class="handle bottom-center" @mousedown="onResizeStart($event, 'bottom-center')"></div>
+            <div class="handle left-center" @mousedown="onResizeStart($event, 'left-center')"></div>
+            <div class="handle right-center" @mousedown="onResizeStart($event, 'right-center')"></div>
+        </template>
     </div>
 </template>
 
@@ -164,30 +203,79 @@ const elementStyle = computed(() => ({
 }
 
 .canvas-element.selected {
-    outline: 3px solid var(--color-indigo-500);
-    outline-offset: 2px;
-    background: rgba(79, 70, 229, 0.05);
-}
-
-.resize-handle {
     position: absolute;
-    right: -10px;
-    bottom: -10px;
-    width: 24px;
-    height: 24px;
-    background: var(--color-indigo-500);
-    border: 2px solid var(--color-white);
-    border-radius: 50%;
-    cursor: se-resize;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
-    transform: rotate(90deg);
+    background: rgba(79, 70, 229, 0.02);
 }
 
-.resize-icon {
-    color: var(--color-white);
+.selection-border {
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 1.5px dashed var(--color-indigo-500);
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.handle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: var(--color-white);
+    border: 2px solid var(--color-indigo-500);
+    border-radius: 1px;
+    z-index: 11;
+    box-sizing: border-box;
+}
+
+.top-left {
+    top: -8px;
+    left: -8px;
+    cursor: nwse-resize;
+}
+
+.top-right {
+    top: -8px;
+    right: -8px;
+    cursor: nesw-resize;
+}
+
+.bottom-left {
+    bottom: -8px;
+    left: -8px;
+    cursor: nesw-resize;
+}
+
+.bottom-right {
+    bottom: -8px;
+    right: -8px;
+    cursor: se-resize;
+}
+
+.top-center {
+    top: -8px;
+    left: calc(50% - 4px);
+    cursor: ns-resize;
+}
+
+.bottom-center {
+    bottom: -8px;
+    left: calc(50% - 4px);
+    cursor: ns-resize;
+}
+
+.left-center {
+    top: calc(50% - 4px);
+    left: -8px;
+    cursor: ew-resize;
+}
+
+.right-center {
+    top: calc(50% - 4px);
+    right: -8px;
+    cursor: ew-resize;
 }
 
 .el-heading {
