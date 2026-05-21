@@ -36,7 +36,16 @@
   "management": {
     "new": "+ New",
     "save": "Save",
-    "exportJson": "Export JSON"
+    "exportJson": "Export JSON",
+    "load": "Load",
+    "close": "Close",
+    "noTemplates": "No saved templates",
+    "delete": "Delete",
+    "templateSavedSuccess": "Template saved successfully.",
+    "failedSave": "Failed to save template.",
+    "failedLoad": "Failed to load templates.",
+    "templateLoaded": "Loaded template: {name}",
+    "failedDelete": "Failed to delete template."
   },
   "footer": {
     "templateInfo": "Template"

@@ -36,7 +36,16 @@
   "management": {
     "new": "+ Yeni",
     "save": "Kaydet",
-    "exportJson": "JSON Dışa Aktar"
+    "exportJson": "JSON Dışa Aktar",
+    "load": "Yükle",
+    "close": "Kapat",
+    "noTemplates": "Kayıtlı şablon yok",
+    "delete": "Sil",
+    "templateSavedSuccess": "Şablon başarıyla kaydedildi.",
+    "failedSave": "Şablon kaydedilemedi.",
+    "failedLoad": "Şablonlar yüklenemedi.",
+    "templateLoaded": "Şablon yüklendi: {name}",
+    "failedDelete": "Şablon silinemedi."
   },
   "footer": {
     "templateInfo": "Şablon"
