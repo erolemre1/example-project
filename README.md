@@ -9,7 +9,7 @@ Developed using Vue 3, TypeScript, and Express.js, this project delivers the cor
 The project has been deployed and is available for live testing:
 
 - **Frontend (Netlify):** [https://interactive-template-builder.netlify.app/](https://interactive-template-builder.netlify.app/)
-- **Backend API (Render):** [https://example-project-gicp.onrender.com/api/templates](https://example-project-gicp.onrender.com/api/templates)
+- **Backend (Render):** [https://example-project-gicp.onrender.com/api/templates](https://example-project-gicp.onrender.com/api/templates)
 
 > **Note:** The backend is hosted on Render's free tier. If the API hasn't been used in a while, it may take around 50 seconds for the server to spin up on the first request. Please be patient during the initial load
 
