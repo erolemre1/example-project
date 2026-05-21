@@ -16,7 +16,6 @@ const paletteItems: { type: ElementType; label: string; icon: any }[] = [
 ]
 
 function onDragStart(e: DragEvent, type: ElementType): void {
-    console.log('Drag:', type)
     if (e.dataTransfer) {
         e.dataTransfer.setData('element-type', type)
         e.dataTransfer.effectAllowed = 'copy'
