@@ -72,3 +72,19 @@ export type TemplateElement =
     | ButtonElement
     | ImageElement
     | DividerElement
+
+export interface Template {
+    id: string;
+    name: string;
+    elements: TemplateElement[];
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface ApiResponse<T = unknown> {
+    success: boolean
+    data?: T
+    error?: string | null
+    message?: string
+    status: number
+}
