@@ -125,7 +125,9 @@ function handleNew(): void {
 }
 
 .btn-primary:hover {
-    background: var(--color-indigo-700);
+    background: var(--color-indigo-500);
+    color: var(--color-white);
+    border-color: var(--color-indigo-500);
 }
 
 .templates-list {
@@ -189,9 +191,5 @@ function handleNew(): void {
 .btn-danger {
     color: var(--color-red-600);
     border-color: var(--color-red-300);
-}
-
-.btn-danger:hover {
-    background: var(--color-red-100);
 }
 </style>
