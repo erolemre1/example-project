@@ -73,7 +73,7 @@ export const useBaseStore = defineStore('base', () => {
           type: 'heading',
           content: 'Heading',
           fontSize: 28,
-          color: 'var(--color-black)',
+          color: '#000',
           alignment: 'center',
           size: { width: 300, height: 40 },
         } as HeadingElement
@@ -84,7 +84,7 @@ export const useBaseStore = defineStore('base', () => {
           type: 'text',
           content: 'Text content here',
           fontSize: 16,
-          color: 'var(--color-gray-600)',
+          color: '#4b5563',
           alignment: 'center',
           size: { width: 300, height: 30 },
         } as TextElement
@@ -94,8 +94,8 @@ export const useBaseStore = defineStore('base', () => {
           ...baseProps,
           type: 'button',
           text: 'Click Me',
-          backgroundColor: 'var(--color-indigo-500)',
-          textColor: 'var(--color-white)',
+          backgroundColor: '#6366f1',
+          textColor: '#ffffff',
           borderRadius: 8,
           size: { width: 170, height: 48 },
         } as ButtonElement
@@ -113,7 +113,7 @@ export const useBaseStore = defineStore('base', () => {
         newElement = {
           ...baseProps,
           type: 'divider',
-          color: 'var(--color-athen-gray)',
+          color: '#d1d5db',
           thickness: 2,
           size: { width: 250, height: 2 },
         } as DividerElement
