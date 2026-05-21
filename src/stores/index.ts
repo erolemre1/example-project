@@ -22,11 +22,40 @@ export const useBaseStore = defineStore('base', () => {
       ? Math.max(...elements.value.map((el) => el.zIndex))
       : 0
   )
+
+  function cloneElements(state: TemplateElement[]): TemplateElement[] {
+    return JSON.parse(JSON.stringify(state)) as TemplateElement[]
+  }
+
+  const history = {
+    undoStack: [] as TemplateElement[][],
+    redoStack: [] as TemplateElement[][],
+    push(state: TemplateElement[]) {
+      this.undoStack.push(cloneElements(state))
+      this.redoStack.length = 0
+    },
+    undo(currentState: TemplateElement[]) {
+      if (this.undoStack.length === 0) return null
+      this.redoStack.push(cloneElements(currentState))
+      return this.undoStack.pop() ?? null
+    },
+    redo(currentState: TemplateElement[]) {
+      if (this.redoStack.length === 0) return null
+      this.undoStack.push(cloneElements(currentState))
+      return this.redoStack.pop() ?? null
+    },
+  }
+
+  function pushHistory(): void {
+    history.push(elements.value)
+  }
+
   function generateId(): string {
     return Date.now().toString(36) + Math.random().toString(36).substring(2, 9)
   }
 
   function addElement(type: ElementType, x: number, y: number): void {
+    history.push(elements.value)
     const baseProps = {
       id: generateId(),
       position: { x, y },
@@ -87,6 +116,8 @@ export const useBaseStore = defineStore('base', () => {
           size: { width: 250, height: 2 },
         } as DividerElement
         break
+      default:
+        throw new Error(`Unsupported element type: ${type}`)
     }
 
     elements.value.push(newElement)
@@ -113,23 +144,17 @@ export const useBaseStore = defineStore('base', () => {
     }
   }
 
-  function saveMovement(id: string, x: number, y: number): void {
-    const element = elements.value.find((item) => item.id === id)
-    if (element) {
-      element.position.x = x
-      element.position.y = y
-    }
-  }
-
   function updateElement(id: string, changes: Partial<TemplateElement>): void {
     const element = elements.value.find((item) => item.id === id)
     if (!element) return
+    history.push(elements.value)
     Object.assign(element, changes)
   }
 
   function deleteElement(id: string): void {
     const index = elements.value.findIndex((item) => item.id === id)
     if (index !== -1) {
+      history.push(elements.value)
       elements.value.splice(index, 1)
       if (selectedElementId.value === id) {
         selectedElementId.value = null
@@ -148,6 +173,7 @@ export const useBaseStore = defineStore('base', () => {
       .filter((e) => e.zIndex > el.zIndex)
       .sort((a, b) => a.zIndex - b.zIndex)[0]
     if (above) {
+      history.push(elements.value)
       const temp = el.zIndex
       el.zIndex = above.zIndex
       above.zIndex = temp
@@ -161,9 +187,26 @@ export const useBaseStore = defineStore('base', () => {
       .filter((e) => e.zIndex < el.zIndex)
       .sort((a, b) => b.zIndex - a.zIndex)[0]
     if (below) {
+      history.push(elements.value)
       const temp = el.zIndex
       el.zIndex = below.zIndex
       below.zIndex = temp
+    }
+  }
+
+  function undo(): void {
+    const state = history.undo(elements.value)
+    if (state) {
+      elements.value = state
+      selectedElementId.value = null
+    }
+  }
+
+  function redo(): void {
+    const state = history.redo(elements.value)
+    if (state) {
+      elements.value = state
+      selectedElementId.value = null
     }
   }
 
@@ -176,10 +219,12 @@ export const useBaseStore = defineStore('base', () => {
     selectElement,
     moveElement,
     resizeElement,
-    saveMovement,
+    pushHistory,
     updateElement,
     deleteElement,
     bringForward,
     sendBackward,
+    undo,
+    redo,
   }
 })

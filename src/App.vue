@@ -20,10 +20,10 @@ const store = useBaseStore()
     <header class="app-header">
       <h1 class="app-title">{{ $t('app.title') }}</h1>
       <div class="header-actions">
-        <button class="btn-icon">
+        <button class="btn-icon" @click="store.undo()">
           <Undo2 :size="16" /> {{ $t('action.undo') }}
         </button>
-        <button class="btn-icon">
+        <button class="btn-icon" @click="store.redo()">
           <Redo2 :size="16" /> {{ $t('action.redo') }}
         </button>
       </div>

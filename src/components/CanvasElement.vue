@@ -14,6 +14,8 @@ const isSelected = computed(() => store.selectedElementId === props.element.id)
 
 const isDragging = ref(false)
 const isResizing = ref(false)
+const dragHasMoved = ref(false)
+const resizeHasChanged = ref(false)
 
 let dragOffset = { x: 0, y: 0 }
 let startDragPos = { x: 0, y: 0 }
@@ -26,6 +28,7 @@ function onMouseDown(e: MouseEvent): void {
 
     store.selectElement(props.element.id)
     isDragging.value = true
+    dragHasMoved.value = false
 
     dragOffset = {
         x: e.clientX - props.element.position.x,
@@ -39,6 +42,11 @@ function onMouseDown(e: MouseEvent): void {
 
 function onMouseMove(e: MouseEvent): void {
     if (!isDragging.value) return
+    if (!dragHasMoved.value) {
+        store.pushHistory()
+        dragHasMoved.value = true
+    }
+
     const x = Math.max(0, e.clientX - dragOffset.x)
     const y = Math.max(0, e.clientY - dragOffset.y)
     store.moveElement(props.element.id, x, y)
@@ -47,11 +55,6 @@ function onMouseMove(e: MouseEvent): void {
 function onMouseUp(): void {
     if (isDragging.value) {
         isDragging.value = false
-
-        const el = props.element
-        if (el.position.x !== startDragPos.x || el.position.y !== startDragPos.y) {
-            store.saveMovement(el.id, el.position.x, el.position.y)
-        }
     }
     document.removeEventListener('mousemove', onMouseMove)
     document.removeEventListener('mouseup', onMouseUp)
@@ -62,6 +65,7 @@ function onResizeStart(e: MouseEvent): void {
     e.preventDefault()
 
     isResizing.value = true
+    resizeHasChanged.value = false
 
     startResizeSize = { width: props.element.size.width, height: props.element.size.height }
     startResizePos = { x: e.clientX, y: e.clientY }
@@ -72,6 +76,11 @@ function onResizeStart(e: MouseEvent): void {
 
 function onResizeMove(e: MouseEvent): void {
     if (!isResizing.value) return
+    if (!resizeHasChanged.value) {
+        store.pushHistory()
+        resizeHasChanged.value = true
+    }
+
     const dx = e.clientX - startResizePos.x
     const dy = e.clientY - startResizePos.y
     const width = Math.max(40, startResizeSize.width + dx)
