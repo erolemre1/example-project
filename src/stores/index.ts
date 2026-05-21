@@ -15,8 +15,10 @@ import { cloneElements, generateId } from '@/utils/store-utils'
 export const useBaseStore = defineStore('base', () => {
   const elements = ref<TemplateElement[]>([])
   const selectedElementId = ref<string | null>(null)
-  const templateName = ref('Template name')
+  const templateName = ref('Untitled Template')
   const templateId = ref<string>(generateId())
+  const canvasSize = ref({ width: 400, height: 500 })
+  const backgroundColor = ref('#FFFFFF')
   const selectedElement = computed(() =>
     elements.value.find((el) => el.id === selectedElementId.value) ?? null
   )
@@ -219,6 +221,8 @@ export const useBaseStore = defineStore('base', () => {
       id: templateId.value,
       name: templateName.value,
       elements: elements.value,
+      canvasSize: canvasSize.value,
+      backgroundColor: backgroundColor.value,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     }
