@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import type { ElementType } from '@/types'
+import type { ElementType } from '../types'
 import {
     Heading,
     Type,
@@ -17,13 +17,21 @@ const paletteItems: { type: ElementType; label: string; icon: any }[] = [
     { type: 'divider', label: 'element.divider', icon: Minus },
 ]
 
+function onDragStart(e: DragEvent, type: ElementType): void {
+    console.log('Drag:', type)
+    if (e.dataTransfer) {
+        e.dataTransfer.setData('element-type', type)
+        e.dataTransfer.effectAllowed = 'copy'
+    }
+}
 
 </script>
 
 <template>
     <div class="element-palette">
         <h3 class="palette-title">{{ $t('element.title') }}</h3>
-        <div v-for="item in paletteItems" :key="item.type" class="palette-item">
+        <div v-for="item in paletteItems" :key="item.type" class="palette-item" draggable="true"
+            @dragstart="onDragStart($event, item.type)">
             <button class="palette-icon">
                 <component :is="item.icon" :size="16" />
             </button>
