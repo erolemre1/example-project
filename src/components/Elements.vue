@@ -45,7 +45,7 @@ function onDragStart(e: DragEvent, type: ElementType): void {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: 16px 8px;
+    padding: 16px 12px;
 }
 
 .palette-title {
