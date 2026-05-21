@@ -8,12 +8,14 @@ import type {
   ButtonElement,
   ImageElement,
   DividerElement,
+  Template,
 } from '@/types'
 
 export const useBaseStore = defineStore('base', () => {
   const elements = ref<TemplateElement[]>([])
   const selectedElementId = ref<string | null>(null)
   const templateName = ref('Template name')
+  const templateId = ref<string>(generateId())
   const selectedElement = computed(() =>
     elements.value.find((el) => el.id === selectedElementId.value) ?? null
   )
@@ -210,6 +212,31 @@ export const useBaseStore = defineStore('base', () => {
     }
   }
 
+  function loadTemplate(template: Template): void {
+    history.push(elements.value)
+    templateId.value = template.id
+    templateName.value = template.name
+    elements.value = template.elements
+  }
+
+  function getTemplate(): Template {
+    return {
+      id: templateId.value,
+      name: templateName.value,
+      elements: elements.value,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    }
+  }
+
+  function newTemplate(): void {
+    history.push(elements.value)
+    elements.value = []
+    selectedElementId.value = null
+    templateId.value = generateId()
+    templateName.value = 'Untitled Template'
+  }
+
   return {
     elements,
     selectedElementId,
@@ -226,5 +253,10 @@ export const useBaseStore = defineStore('base', () => {
     sendBackward,
     undo,
     redo,
+    loadTemplate,
+    getTemplate,
+    newTemplate,
   }
 })
+
+export { useNotificationStore } from './notification'

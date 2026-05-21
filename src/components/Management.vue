@@ -1,13 +1,94 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useBaseStore, useNotificationStore } from '../stores/index'
+import { NOTIF_ERROR, NOTIF_SUCCESS } from '../constants/notifications'
+import { fetchTemplates, saveTemplate, deleteTemplate } from '../services/api'
+import type { Template } from '../types'
 
+const store = useBaseStore()
+const notificationStore = useNotificationStore()
+const { t } = useI18n()
+const savedTemplates = ref<Template[]>([])
+const showList = ref(false)
+
+async function handleSave(): Promise<void> {
+    try {
+        const template = store.getTemplate()
+        await saveTemplate(template)
+        notificationStore.notify(t('management.templateSavedSuccess'), NOTIF_SUCCESS)
+    } catch {
+        notificationStore.notify(t('management.failedSave'), NOTIF_ERROR)
+    }
+}
+
+async function handleLoadList(): Promise<void> {
+    try {
+        savedTemplates.value = await fetchTemplates()
+        showList.value = !showList.value
+    } catch {
+        notificationStore.notify(t('management.failedLoad'), NOTIF_ERROR)
+    }
+}
+
+function handleLoad(template: Template): void {
+    try {
+        store.loadTemplate(template)
+        notificationStore.notify(t('management.templateLoaded', { name: template.name }), NOTIF_SUCCESS)
+    } catch {
+        notificationStore.notify(t('management.failedLoad'), NOTIF_ERROR)
+    }
+}
+
+async function handleDelete(id: string): Promise<void> {
+    try {
+        await deleteTemplate(id)
+        savedTemplates.value = savedTemplates.value.filter((t) => t.id !== id)
+    } catch {
+        notificationStore.notify(t('management.failedDelete'), NOTIF_ERROR)
+    }
+}
+
+function handleExportJSON(): void {
+    const template = store.getTemplate()
+    const json = JSON.stringify(template, null, 2)
+    const blob = new Blob([json], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${template.name.replace(/\s+/g, '_')}.json`
+    a.click()
+    URL.revokeObjectURL(url)
+}
+
+function handleNew(): void {
+    store.newTemplate()
+}
 </script>
 
 <template>
     <div class="template-manager">
         <div class="manager-buttons">
-            <button class="btn">{{ $t('management.new') }}</button>
-            <button class="btn btn-primary">{{ $t('management.save') }}</button>
-            <button class="btn">{{ $t('management.exportJson') }}</button>
+            <button class="btn" @click="handleNew">+ New</button>
+            <button class="btn btn-primary" @click="handleSave">Save</button>
+            <button class="btn" @click="handleExportJSON">Export JSON</button>
+            <button class="btn" @click="handleLoadList">
+                {{ showList ? $t('management.close') : $t('management.load') }}
+            </button>
+        </div>
+        <div v-if="showList" class="templates-list">
+            <div v-if="savedTemplates.length === 0" class="no-templates">
+                {{ $t('management.noTemplates') }}
+            </div>
+            <div v-for="tmpl in savedTemplates" :key="tmpl.id" class="template-item">
+                <span class="template-name">{{ tmpl.name }}</span>
+                <div class="template-actions">
+                    <button class="btn-xs" @click="handleLoad(tmpl)"> {{ $t('management.load') }} </button>
+                    <button class="btn-xs btn-danger" @click="handleDelete(tmpl.id)">
+                        {{ $t('management.delete') }}
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </template>
