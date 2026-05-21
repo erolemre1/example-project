@@ -14,6 +14,9 @@ export const useBaseStore = defineStore('base', () => {
   const elements = ref<TemplateElement[]>([])
   const selectedElementId = ref<string | null>(null)
   const templateName = ref('Template name')
+  const selectedElement = computed(() =>
+    elements.value.find((el) => el.id === selectedElementId.value) ?? null
+  )
   const maxZIndex = computed(() =>
     elements.value.length > 0
       ? Math.max(...elements.value.map((el) => el.zIndex))
@@ -118,6 +121,22 @@ export const useBaseStore = defineStore('base', () => {
     }
   }
 
+  function updateElement(id: string, changes: Partial<TemplateElement>): void {
+    const element = elements.value.find((item) => item.id === id)
+    if (!element) return
+    Object.assign(element, changes)
+  }
+
+  function deleteElement(id: string): void {
+    const index = elements.value.findIndex((item) => item.id === id)
+    if (index !== -1) {
+      elements.value.splice(index, 1)
+      if (selectedElementId.value === id) {
+        selectedElementId.value = null
+      }
+    }
+  }
+
   function findElement(id: string): TemplateElement | undefined {
     return elements.value.find((item) => item.id === id)
   }
@@ -151,12 +170,15 @@ export const useBaseStore = defineStore('base', () => {
   return {
     elements,
     selectedElementId,
+    selectedElement,
     templateName,
     addElement,
     selectElement,
     moveElement,
     resizeElement,
     saveMovement,
+    updateElement,
+    deleteElement,
     bringForward,
     sendBackward,
   }

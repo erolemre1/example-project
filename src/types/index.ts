@@ -1,4 +1,16 @@
-export type ElementType = 'heading' | 'text' | 'button' | 'image' | 'divider'
+export enum ElementType {
+    HEADING = 'heading',
+    TEXT = 'text',
+    BUTTON = 'button',
+    IMAGE = 'image',
+    DIVIDER = 'divider'
+}
+
+export enum Alignment {
+    LEFT = 'left',
+    CENTER = 'center',
+    RIGHT = 'right'
+}
 
 export type Position = {
     x: number
@@ -19,23 +31,23 @@ export interface BaseElement {
 }
 
 export interface HeadingElement extends BaseElement {
-    type: 'heading'
+    type: ElementType.HEADING
     content: string
     fontSize: number
     color: string
-    alignment: 'left' | 'center' | 'right'
+    alignment: Alignment
 }
 
 export interface TextElement extends BaseElement {
-    type: 'text'
+    type: ElementType.TEXT
     content: string
     fontSize: number
     color: string
-    alignment: 'left' | 'center' | 'right'
+    alignment: Alignment
 }
 
 export interface ButtonElement extends BaseElement {
-    type: 'button'
+    type: ElementType.BUTTON
     text: string
     backgroundColor: string
     textColor: string
@@ -43,13 +55,13 @@ export interface ButtonElement extends BaseElement {
 }
 
 export interface ImageElement extends BaseElement {
-    type: 'image'
+    type: ElementType.IMAGE
     url: string
     altText: string
 }
 
 export interface DividerElement extends BaseElement {
-    type: 'divider'
+    type: ElementType.DIVIDER
     color: string
     thickness: number
 }

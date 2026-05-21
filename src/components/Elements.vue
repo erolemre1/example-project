@@ -45,6 +45,7 @@ function onDragStart(e: DragEvent, type: ElementType): void {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    padding: 16px 8px;
 }
 
 .palette-title {
@@ -66,6 +67,8 @@ function onDragStart(e: DragEvent, type: ElementType): void {
     cursor: grab;
     transition: box-shadow 0.15s, border-color 0.15s;
     user-select: none;
+    width: 120px;
+    background: var(--color-gray-100);
 }
 
 .palette-icon {

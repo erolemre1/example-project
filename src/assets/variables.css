@@ -9,10 +9,14 @@
   --color-gray-100: #f3f4f6;
   --color-gray-200: #e5e7eb;
   --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
   --color-gray-600: #4b5563;
   --color-gray-700: #374151;
   --color-gray-text: #6b7280;
   --color-athen-gray: #e5e7eb;
   --color-indigo-300: #a5b4fc;
   --color-indigo-500: #4f46e5;
+  --color-red-50: #fef2f2;
+  --color-red-200: #fca5a5;
+  --color-red-600: #dc2626;
 }
