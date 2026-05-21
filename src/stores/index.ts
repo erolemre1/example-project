@@ -118,6 +118,36 @@ export const useBaseStore = defineStore('base', () => {
     }
   }
 
+  function findElement(id: string): TemplateElement | undefined {
+    return elements.value.find((item) => item.id === id)
+  }
+
+  function bringForward(id: string) {
+    const el = findElement(id)
+    if (!el) return
+    const above = elements.value
+      .filter((e) => e.zIndex > el.zIndex)
+      .sort((a, b) => a.zIndex - b.zIndex)[0]
+    if (above) {
+      const temp = el.zIndex
+      el.zIndex = above.zIndex
+      above.zIndex = temp
+    }
+  }
+
+  function sendBackward(id: string) {
+    const el = findElement(id)
+    if (!el) return
+    const below = elements.value
+      .filter((e) => e.zIndex < el.zIndex)
+      .sort((a, b) => b.zIndex - a.zIndex)[0]
+    if (below) {
+      const temp = el.zIndex
+      el.zIndex = below.zIndex
+      below.zIndex = temp
+    }
+  }
+
   return {
     elements,
     selectedElementId,
@@ -127,5 +157,7 @@ export const useBaseStore = defineStore('base', () => {
     moveElement,
     resizeElement,
     saveMovement,
+    bringForward,
+    sendBackward,
   }
 })

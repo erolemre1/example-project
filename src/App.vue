@@ -33,10 +33,10 @@ const store = useBaseStore()
       <main class="canvas-container">
         <Canvas />
         <div class="canvas-actions" v-if="store.selectedElementId">
-          <button class="btn-icon">
+          <button class="btn-icon" @click="store.bringForward(store.selectedElementId)">
             <ArrowUp :size="16" /> {{ $t('action.bringForward') }}
           </button>
-          <button class="btn-icon">
+          <button class="btn-icon" @click="store.sendBackward(store.selectedElementId)">
             <ArrowDown :size="16" /> {{ $t('action.sendBackward') }}
           </button>
         </div>
