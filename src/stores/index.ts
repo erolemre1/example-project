@@ -10,6 +10,7 @@ import type {
   DividerElement,
   Template,
 } from '@/types'
+import { cloneElements, generateId } from '@/utils/store-utils'
 
 export const useBaseStore = defineStore('base', () => {
   const elements = ref<TemplateElement[]>([])
@@ -24,10 +25,6 @@ export const useBaseStore = defineStore('base', () => {
       ? Math.max(...elements.value.map((el) => el.zIndex))
       : 0
   )
-
-  function cloneElements(state: TemplateElement[]): TemplateElement[] {
-    return JSON.parse(JSON.stringify(state)) as TemplateElement[]
-  }
 
   const history = {
     undoStack: [] as TemplateElement[][],
@@ -52,9 +49,7 @@ export const useBaseStore = defineStore('base', () => {
     history.push(elements.value)
   }
 
-  function generateId(): string {
-    return Date.now().toString(36) + Math.random().toString(36).substring(2, 9)
-  }
+
 
   function addElement(type: ElementType, x: number, y: number): void {
     history.push(elements.value)
