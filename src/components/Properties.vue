@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useBaseStore } from '../stores/index'
-import { ElementType, Alignment } from '../types'
+import { ElementEnum, Alignment } from '../types'
 
 const store = useBaseStore()
 
@@ -57,7 +57,7 @@ function deleteSelected(): void {
             <h3 class="panel-title">{{ $t('panel.properties') }}</h3>
             <div class="element-type-badge">{{ element.type }}</div>
 
-            <template v-if="element.type === ElementType.HEADING">
+            <template v-if="element.type === ElementEnum.HEADING">
                 <div class="prop-group">
                     <label>{{ $t('element.text') }}</label>
                     <input type="text" :value="element?.content" @input="updateField('content', $event)" />
@@ -83,7 +83,7 @@ function deleteSelected(): void {
                 </div>
             </template>
 
-            <template v-if="element.type === ElementType.TEXT">
+            <template v-if="element.type === ElementEnum.TEXT">
                 <div class="prop-group">
                     <label>{{ $t('element.text') }}</label>
                     <textarea :value="element?.content" @input="updateField('content', $event)" rows="3"></textarea>
