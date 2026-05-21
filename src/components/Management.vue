@@ -40,10 +40,12 @@ function handleLoad(template: Template): void {
     }
 }
 
-async function handleDelete(id: string): Promise<void> {
+async function handleDelete(template: Template): Promise<void> {
     try {
-        await deleteTemplate(id)
-        savedTemplates.value = savedTemplates.value.filter((t) => t.id !== id)
+
+        await deleteTemplate(template.id)
+        savedTemplates.value = savedTemplates.value.filter((t) => t.id !== template.id)
+        notificationStore.notify(t('management.templateDeleted', { name: template.name }), NOTIF_SUCCESS)
     } catch {
         notificationStore.notify(t('management.failedDelete'), NOTIF_ERROR)
     }
@@ -84,7 +86,7 @@ function handleNew(): void {
                 <span class="template-name">{{ tmpl.name }}</span>
                 <div class="template-actions">
                     <button class="btn-xs" @click="handleLoad(tmpl)"> {{ $t('management.load') }} </button>
-                    <button class="btn-xs btn-danger" @click="handleDelete(tmpl.id)">
+                    <button class="btn-xs btn-danger" @click="handleDelete(tmpl)">
                         {{ $t('management.delete') }}
                     </button>
                 </div>

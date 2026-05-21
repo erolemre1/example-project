@@ -45,6 +45,7 @@
     "failedSave": "Failed to save template.",
     "failedLoad": "Failed to load templates.",
     "templateLoaded": "Loaded template: {name}",
+    "templateDeleted": "Template deleted: {name}",
     "failedDelete": "Failed to delete template."
   },
   "footer": {

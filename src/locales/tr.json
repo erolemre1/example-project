@@ -45,6 +45,7 @@
     "failedSave": "Şablon kaydedilemedi.",
     "failedLoad": "Şablonlar yüklenemedi.",
     "templateLoaded": "Şablon yüklendi: {name}",
+    "templateDeleted": "Şablon silindi: {name}",
     "failedDelete": "Şablon silinemedi."
   },
   "footer": {
