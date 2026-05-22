@@ -32,7 +32,7 @@ Runs the Express server on http://localhost:3001
    ```sh
    npm run server
    
-3. **Start the Backend Server:**
+3. **Start the Frontend Dev Server:**
 Runs the Vue app via Vite (typically on http://localhost:5173)
 
    ```sh

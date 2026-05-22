@@ -1,7 +1,6 @@
 import { generateId } from '@/utils/store-utils'
 import type {
     TemplateElement,
-    ElementType,
     HeadingElement,
     TextElement,
     ButtonElement,

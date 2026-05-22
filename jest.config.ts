@@ -5,6 +5,7 @@ const config: Config = {
   testEnvironment: 'jsdom',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^nanoid$': '<rootDir>/tests/__mocks__/nanoid.ts',
   },
   transform: {
     '^.+\\.ts$': ['ts-jest', {

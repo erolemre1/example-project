@@ -2,12 +2,15 @@ import { setActivePinia, createPinia } from 'pinia'
 import { useBaseStore } from '../src/stores/index'
 
 describe('Template Store', () => {
+  let store: ReturnType<typeof useBaseStore>
+
   beforeEach(() => {
     setActivePinia(createPinia())
+    store = useBaseStore()
+    store.newTemplate()
   })
 
   it('should add an element to the canvas', () => {
-    const store = useBaseStore()
     expect(store.elements).toHaveLength(0)
 
     store.addElement('heading', 50, 100)
@@ -18,7 +21,6 @@ describe('Template Store', () => {
   })
 
   it('should delete an element and deselect it', () => {
-    const store = useBaseStore()
     store.addElement('button', 10, 20)
     const id = store.elements[0].id
     store.selectElement(id)
@@ -31,7 +33,6 @@ describe('Template Store', () => {
   })
 
   it('should update element properties', () => {
-    const store = useBaseStore()
     store.addElement('button', 0, 0)
     const id = store.elements[0].id
 
@@ -42,7 +43,6 @@ describe('Template Store', () => {
   })
 
   it('should support undo and redo', () => {
-    const store = useBaseStore()
     store.addElement('text', 0, 0)
     expect(store.elements).toHaveLength(1)
 
@@ -54,7 +54,6 @@ describe('Template Store', () => {
   })
 
   it('should manage z-index with bringForward and sendBackward', () => {
-    const store = useBaseStore()
     store.addElement('heading', 0, 0)
     store.addElement('text', 0, 50)
 
@@ -73,7 +72,6 @@ describe('Template Store', () => {
   })
 
   it('should export template as valid JSON structure', () => {
-    const store = useBaseStore()
     store.addElement('heading', 10, 20)
     store.addElement('button', 30, 40)
 
