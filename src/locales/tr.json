@@ -37,6 +37,8 @@
     "new": "+ Yeni",
     "save": "Kaydet",
     "exportJson": "JSON Dışa Aktar",
+    "preview": "Önizleme",
+    "previewTitle": "Şablon Önizleme",
     "load": "Yükle",
     "close": "Kapat",
     "noTemplates": "Kayıtlı şablon yok",
@@ -52,6 +54,7 @@
     "templateInfo": "Şablon"
   },
   "panel": {
-    "properties": "ÖZELLİKLER"
+    "properties": "ÖZELLİKLER",
+    "noSelection": "Düzenlemek için bir öğe seçin"
   }
 }

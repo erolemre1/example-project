@@ -37,6 +37,8 @@
     "new": "+ New",
     "save": "Save",
     "exportJson": "Export JSON",
+    "preview": "Preview",
+    "previewTitle": "Template Preview",
     "load": "Load",
     "close": "Close",
     "noTemplates": "No saved templates",
@@ -52,6 +54,7 @@
     "templateInfo": "Template"
   },
   "panel": {
-    "properties": "PROPERTIES"
+    "properties": "PROPERTIES",
+    "noSelection": "Select an element to edit its properties"
   }
 }

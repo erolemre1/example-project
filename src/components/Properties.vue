@@ -197,6 +197,10 @@ function deleteSelected(): void {
 
             <button class="btn-delete" @click="deleteSelected">{{ $t('element.delete') }}</button>
         </template>
+
+        <div v-else class="no-selection">
+            {{ $t('panel.noSelection') }}
+        </div>
     </div>
 </template>
 
