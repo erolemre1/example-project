@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useNotificationStore } from '../stores/index'
 
+defineOptions({ name: 'AppNotification' })
+
 const notificationStore = useNotificationStore()
 </script>
 

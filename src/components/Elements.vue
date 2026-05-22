@@ -7,6 +7,8 @@ import {
     Minus
 } from 'lucide-vue-next'
 
+defineOptions({ name: 'ElementPalette' })
+
 const paletteItems: { type: ElementType; label: string; icon: any }[] = [
     { type: 'heading', label: 'element.heading', icon: Heading },
     { type: 'text', label: 'element.text', icon: Type },

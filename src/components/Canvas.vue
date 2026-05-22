@@ -4,6 +4,8 @@ import type { ElementType } from '../types'
 import CanvasElement from './CanvasElement.vue'
 import { useBaseStore } from '../stores/index'
 
+defineOptions({ name: 'TemplateCanvas' })
+
 const store = useBaseStore()
 const elements = computed(() =>
     [...store.elements].sort((a, b) => a.zIndex - b.zIndex)

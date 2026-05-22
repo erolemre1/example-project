@@ -3,6 +3,8 @@ import { computed } from 'vue'
 import { useBaseStore } from '../stores/index'
 import { ElementEnum, Alignment } from '../types'
 
+defineOptions({ name: 'ElementProperties' })
+
 const store = useBaseStore()
 
 const element = computed(() => store.selectedElement)

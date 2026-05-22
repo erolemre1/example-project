@@ -15,6 +15,7 @@ import Notification from './components/Notification.vue'
 import { useBaseStore } from './stores/index'
 import { cloneElements } from './utils/store-utils'
 import type { TemplateElement } from './types'
+import { KeyboardKeys } from './constants/keyboard'
 
 const store = useBaseStore()
 const clipboard = ref<TemplateElement | null>(null)
@@ -31,29 +32,31 @@ function onKeyDown(e: KeyboardEvent): void {
 
   const ctrl = e.ctrlKey || e.metaKey
 
-  if (ctrl && e.key.toLowerCase() === 'z' && !e.shiftKey) {
+  if (ctrl && e.key.toLowerCase() === KeyboardKeys.Z && !e.shiftKey) {
     e.preventDefault()
     store.undo()
     return
   }
-  if (ctrl && (e.key.toLowerCase() === 'y' || (e.shiftKey && e.key.toLowerCase() === 'z'))) {
+  if (ctrl && (e.key.toLowerCase() === KeyboardKeys.Y || (e.shiftKey && e.key.toLowerCase() === KeyboardKeys.Z))) {
     e.preventDefault()
     store.redo()
     return
   }
-  if (ctrl && e.key.toLowerCase() === 'c') {
+  if (ctrl && e.key.toLowerCase() === KeyboardKeys.C) {
     if (!store.selectedElement) return
     e.preventDefault()
-    clipboard.value = cloneElements([store.selectedElement])[0]
+    const [copied] = cloneElements([store.selectedElement])
+    if (!copied) return
+    clipboard.value = copied
     return
   }
-  if (ctrl && e.key.toLowerCase() === 'v') {
+  if (ctrl && e.key.toLowerCase() === KeyboardKeys.V) {
     if (!clipboard.value) return
     e.preventDefault()
     store.duplicateElement(clipboard.value)
     return
   }
-  if (e.key === 'Delete' || e.key === 'Backspace') {
+  if (e.key === KeyboardKeys.Delete || e.key === KeyboardKeys.Backspace) {
     if (!store.selectedElementId) return
     e.preventDefault()
     store.deleteSelectedElement()
@@ -63,10 +66,10 @@ function onKeyDown(e: KeyboardEvent): void {
   if (!store.selectedElementId) return
   const step = e.shiftKey ? store.GRID_SIZE * 2 : store.GRID_SIZE
 
-  if (e.key === 'ArrowUp') { e.preventDefault(); store.nudgeSelectedElement(0, -step) }
-  else if (e.key === 'ArrowDown') { e.preventDefault(); store.nudgeSelectedElement(0, step) }
-  else if (e.key === 'ArrowLeft') { e.preventDefault(); store.nudgeSelectedElement(-step, 0) }
-  else if (e.key === 'ArrowRight') { e.preventDefault(); store.nudgeSelectedElement(step, 0) }
+  if (e.key === KeyboardKeys.ArrowUp) { e.preventDefault(); store.nudgeSelectedElement(0, -step) }
+  else if (e.key === KeyboardKeys.ArrowDown) { e.preventDefault(); store.nudgeSelectedElement(0, step) }
+  else if (e.key === KeyboardKeys.ArrowLeft) { e.preventDefault(); store.nudgeSelectedElement(-step, 0) }
+  else if (e.key === KeyboardKeys.ArrowRight) { e.preventDefault(); store.nudgeSelectedElement(step, 0) }
 }
 
 onMounted(() => window.addEventListener('keydown', onKeyDown))

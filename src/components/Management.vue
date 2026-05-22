@@ -7,6 +7,8 @@ import { fetchTemplates, saveTemplate, deleteTemplate } from '../services/api'
 import PreviewModal from './PreviewModal.vue'
 import type { Template } from '../types'
 
+defineOptions({ name: 'TemplateManagement' })
+
 const store = useBaseStore()
 const notificationStore = useNotificationStore()
 const { t } = useI18n()

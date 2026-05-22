@@ -12,8 +12,8 @@ async function handleError(error: unknown): Promise<ApiResponse> {
     if (axios.isAxiosError(error)) {
         const res = error.response
         if (res) {
-            const payload: any = res.data
-            const message = payload?.message || res.statusText
+            const payload = res.data as { message?: unknown } | undefined
+            const message = typeof payload?.message === 'string' ? payload.message : res.statusText
             return { success: false, status: res.status, error: String(message) }
         }
         return { success: false, status: 0, error: error.message }
