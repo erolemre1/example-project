@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useBaseStore, useNotificationStore } from '../stores/index'
 import { NOTIF_ERROR, NOTIF_SUCCESS } from '../constants/notifications'
 import { fetchTemplates, saveTemplate, deleteTemplate } from '../services/api'
+import PreviewModal from './PreviewModal.vue'
 import type { Template } from '../types'
 
 const store = useBaseStore()
@@ -11,6 +12,7 @@ const notificationStore = useNotificationStore()
 const { t } = useI18n()
 const savedTemplates = ref<Template[]>([])
 const showList = ref(false)
+const showPreview = ref(false)
 
 async function handleSave(): Promise<void> {
     try {
@@ -66,6 +68,14 @@ function handleExportJSON(): void {
 function handleNew(): void {
     store.newTemplate()
 }
+
+function openPreview(): void {
+    showPreview.value = true
+}
+
+function closePreview(): void {
+    showPreview.value = false
+}
 </script>
 
 <template>
@@ -74,6 +84,7 @@ function handleNew(): void {
             <button class="btn" @click="handleNew">+ New</button>
             <button class="btn btn-primary" @click="handleSave">Save</button>
             <button class="btn" @click="handleExportJSON">Export JSON</button>
+            <button class="btn" @click="openPreview">{{ $t('management.preview') }}</button>
             <button class="btn" @click="handleLoadList">
                 {{ showList ? $t('management.close') : $t('management.load') }}
             </button>
@@ -92,6 +103,7 @@ function handleNew(): void {
                 </div>
             </div>
         </div>
+        <PreviewModal :visible="showPreview" @close="closePreview" />
     </div>
 </template>
 

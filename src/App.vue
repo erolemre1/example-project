@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted, onBeforeUnmount, ref } from 'vue'
 import {
   Undo2,
   Redo2,
@@ -12,8 +13,64 @@ import Canvas from './components/Canvas.vue'
 import Notification from './components/Notification.vue'
 
 import { useBaseStore } from './stores/index'
-const store = useBaseStore()
+import { cloneElements } from './utils/store-utils'
+import type { TemplateElement } from './types'
 
+const store = useBaseStore()
+const clipboard = ref<TemplateElement | null>(null)
+
+function isEditable(target: EventTarget | null): boolean {
+  if (!target) return false
+  const el = target as HTMLElement
+  const tag = el.tagName.toLowerCase()
+  return tag === 'input' || tag === 'textarea' || tag === 'select' || el.isContentEditable
+}
+
+function onKeyDown(e: KeyboardEvent): void {
+  if (isEditable(e.target)) return
+
+  const ctrl = e.ctrlKey || e.metaKey
+
+  if (ctrl && e.key.toLowerCase() === 'z' && !e.shiftKey) {
+    e.preventDefault()
+    store.undo()
+    return
+  }
+  if (ctrl && (e.key.toLowerCase() === 'y' || (e.shiftKey && e.key.toLowerCase() === 'z'))) {
+    e.preventDefault()
+    store.redo()
+    return
+  }
+  if (ctrl && e.key.toLowerCase() === 'c') {
+    if (!store.selectedElement) return
+    e.preventDefault()
+    clipboard.value = cloneElements([store.selectedElement])[0]
+    return
+  }
+  if (ctrl && e.key.toLowerCase() === 'v') {
+    if (!clipboard.value) return
+    e.preventDefault()
+    store.duplicateElement(clipboard.value)
+    return
+  }
+  if (e.key === 'Delete' || e.key === 'Backspace') {
+    if (!store.selectedElementId) return
+    e.preventDefault()
+    store.deleteSelectedElement()
+    return
+  }
+
+  if (!store.selectedElementId) return
+  const step = e.shiftKey ? store.GRID_SIZE * 2 : store.GRID_SIZE
+
+  if (e.key === 'ArrowUp') { e.preventDefault(); store.nudgeSelectedElement(0, -step) }
+  else if (e.key === 'ArrowDown') { e.preventDefault(); store.nudgeSelectedElement(0, step) }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); store.nudgeSelectedElement(-step, 0) }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); store.nudgeSelectedElement(step, 0) }
+}
+
+onMounted(() => window.addEventListener('keydown', onKeyDown))
+onBeforeUnmount(() => window.removeEventListener('keydown', onKeyDown))
 </script>
 
 <template>
@@ -42,7 +99,7 @@ const store = useBaseStore()
           </button>
         </div>
       </main>
-      <Properties v-if="store.selectedElementId" />
+      <Properties />
     </div>
     <footer class="app-footer">
       <Management />

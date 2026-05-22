@@ -35,7 +35,11 @@ function onDrop(e: DragEvent): void {
     position: relative;
     width: 400px;
     height: 500px;
-    background: var(--color-white);
+    background:
+        linear-gradient(to right, rgba(17, 24, 39, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(17, 24, 39, 0.04) 1px, transparent 1px),
+        var(--color-white);
+    background-size: 10px 10px;
     border: 2px solid var(--color-athen-gray);
     border-radius: 8px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);

@@ -14,7 +14,8 @@ import { cloneElements, generateId } from '@/utils/store-utils'
 import DefaultElements from '@/data/default-template'
 
 export const useBaseStore = defineStore('base', () => {
-  const elements = ref<TemplateElement[]>(DefaultElements)
+  const GRID_SIZE = 10
+  const elements = ref<TemplateElement[]>(cloneElements(DefaultElements))
   const selectedElementId = ref<string | null>(DefaultElements?.[4]?.id || null)
   const templateName = ref('Promo Popup v1')
   const templateId = ref<string>(generateId())
@@ -52,11 +53,15 @@ export const useBaseStore = defineStore('base', () => {
     history.push(elements.value)
   }
 
+  function snapToGrid(value: number): number {
+    return Math.round(value / GRID_SIZE) * GRID_SIZE
+  }
+
   function addElement(type: ElementType, x: number, y: number): void {
     history.push(elements.value)
     const baseProps = {
       id: generateId(),
-      position: { x, y },
+      position: { x: snapToGrid(x), y: snapToGrid(y) },
       zIndex: maxZIndex.value + 1,
     }
 
@@ -129,16 +134,16 @@ export const useBaseStore = defineStore('base', () => {
   function moveElement(id: string, x: number, y: number): void {
     const element = elements.value.find((item) => item.id === id)
     if (element) {
-      element.position.x = x
-      element.position.y = y
+      element.position.x = Math.max(0, snapToGrid(x))
+      element.position.y = Math.max(0, snapToGrid(y))
     }
   }
 
   function resizeElement(id: string, width: number, height: number): void {
     const element = elements.value.find((item) => item.id === id)
     if (element) {
-      element.size.width = width
-      element.size.height = height
+      element.size.width = Math.max(GRID_SIZE, snapToGrid(width))
+      element.size.height = Math.max(GRID_SIZE, snapToGrid(height))
     }
   }
 
@@ -208,6 +213,32 @@ export const useBaseStore = defineStore('base', () => {
     }
   }
 
+  function deleteSelectedElement(): void {
+    if (!selectedElementId.value) return
+    deleteElement(selectedElementId.value)
+  }
+
+  function nudgeSelectedElement(dx: number, dy: number): void {
+    const el = selectedElement.value
+    if (!el) return
+    history.push(elements.value)
+    moveElement(el.id, el.position.x + dx, el.position.y + dy)
+  }
+
+  function duplicateElement(source: TemplateElement): void {
+    history.push(elements.value)
+    const cloned = cloneElements([source])[0]
+    if (!cloned) return
+    cloned.id = generateId()
+    cloned.zIndex = maxZIndex.value + 1
+    cloned.position = {
+      x: snapToGrid(source.position.x + GRID_SIZE * 2),
+      y: snapToGrid(source.position.y + GRID_SIZE * 2),
+    }
+    elements.value.push(cloned)
+    selectedElementId.value = cloned.id
+  }
+
   function loadTemplate(template: Template): void {
     history.push(elements.value)
     templateId.value = template.id
@@ -240,6 +271,9 @@ export const useBaseStore = defineStore('base', () => {
     selectedElementId,
     selectedElement,
     templateName,
+    canvasSize,
+    backgroundColor,
+    GRID_SIZE,
     addElement,
     selectElement,
     moveElement,
@@ -247,10 +281,13 @@ export const useBaseStore = defineStore('base', () => {
     pushHistory,
     updateElement,
     deleteElement,
+    deleteSelectedElement,
     bringForward,
     sendBackward,
     undo,
     redo,
+    nudgeSelectedElement,
+    duplicateElement,
     loadTemplate,
     getTemplate,
     newTemplate,
